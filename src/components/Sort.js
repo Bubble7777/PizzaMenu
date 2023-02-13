@@ -1,15 +1,14 @@
 import { useState } from 'react';
 
-function Sort() {
+function Sort({ value, onChangeSort }) {
   const [openSort, setOpenSort] = useState(false);
-  const [selected, setSelected] = useState(0);
 
-  const listPopup = ['популярности', 'цене', 'алфавиту'];
+  const listPopup = [
+    { name: 'популярности', sortProperty: 'rating' },
+    { name: 'цене', sortProperty: 'price' },
+    { name: 'алфавиту', sortProperty: 'title' },
+  ];
 
-  const handlerOpenPopup = (i) => {
-    setSelected(i);
-    setOpenSort(false);
-  };
   return (
     <div className="sort">
       <div className="sort__label">
@@ -31,7 +30,7 @@ function Sort() {
             setOpenSort(!openSort);
           }}
         >
-          {listPopup[selected]}
+          {value.name}
         </span>
       </div>
       {openSort && (
@@ -41,10 +40,10 @@ function Sort() {
               return (
                 <li
                   key={index}
-                  onClick={() => handlerOpenPopup(index)}
-                  className={selected === index ? 'active' : ''}
+                  onClick={() => onChangeSort(popup)}
+                  className={value.sortProperty === popup.sortProperty ? 'active' : ''}
                 >
-                  {popup}
+                  {popup.name}
                 </li>
               );
             })}
